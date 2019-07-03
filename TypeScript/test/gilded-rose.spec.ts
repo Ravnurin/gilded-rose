@@ -18,7 +18,8 @@ describe('Gilded Rose', function () {
             new Item(AGED_BRIE, 2, 50),
             new Item("Elixir of the Mongoose", 0, 7),
             new Item(conjuredItem, 5, 7),
-            new Item(conjuredItem, 0, 4),
+            new Item(conjuredItem, 0, 3),
+            new Item(BACKSTAGE_PASSES, 5, 40)
         ]);
         const items = gildedRose.updateQuality();
 
@@ -29,6 +30,8 @@ describe('Gilded Rose', function () {
         assertItemValues(items[4], "Elixir of the Mongoose", -1, 5);
         assertItemValues(items[5], conjuredItem, 4, 5);
         assertItemValues(items[6], conjuredItem, -1, 0);
+        assertItemValues(items[7], BACKSTAGE_PASSES, 4, 43);
+        
     });
 
 });
