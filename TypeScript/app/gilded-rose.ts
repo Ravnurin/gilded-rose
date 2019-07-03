@@ -14,6 +14,10 @@ export const AGED_BRIE = 'Aged Brie';
 export const BACKSTAGE_PASSES = 'Backstage passes to a TAFKAL80ETC concert';
 export const SULFURAS = 'Sulfuras, Hand of Ragnaros'
 
+export const isConjuredItem = (item: string) => {
+    return item.toLowerCase().includes("conjured");
+}
+
 export class GildedRose {
     items: Item[];
 
@@ -24,43 +28,48 @@ export class GildedRose {
     updateQuality() {
         return this.items.map(item => {
             const newItem = { ...item };
-            // const { name, sellIn, quality } = newItem;
+            const { name, sellIn, quality } = newItem;
 
-            if (newItem.name !== AGED_BRIE && newItem.name !== BACKSTAGE_PASSES) {
-                if (newItem.quality > 0 && newItem.name !== SULFURAS) {
-                    newItem.quality--;
-                }
-            } else {
-                if (newItem.quality < 50) {
-                    newItem.quality++;
-
-                    if (newItem.name === BACKSTAGE_PASSES) {
-                        if (newItem.sellIn < 11 && newItem.quality < 50) {
-                            newItem.quality++;
-                        }
-                        if (newItem.sellIn < 6 && newItem.quality < 50) {
-                            newItem.quality++;                            
-                        }
-                    }
-                }
-            }
-            if (newItem.name !== SULFURAS) {
+            if (isConjuredItem(item.name)) {
                 newItem.sellIn--;
-            }
-            if (newItem.sellIn < 0) {
-                if (newItem.name !== AGED_BRIE) {
-                    if (newItem.name !== BACKSTAGE_PASSES) {
-                        if (newItem.quality > 0) {
-                            if (newItem.name !== SULFURAS) {
-                                newItem.quality--;
-                            }
-                        }
-                    } else {
-                        newItem.quality = newItem.quality - newItem.quality;
+                newItem.quality = sellIn > 0 ? quality -2 : quality - 4
+            } else {
+                if (newItem.name !== AGED_BRIE && newItem.name !== BACKSTAGE_PASSES) {
+                    if (newItem.quality > 0 && newItem.name !== SULFURAS) {
+                        newItem.quality--;
                     }
                 } else {
                     if (newItem.quality < 50) {
                         newItem.quality++;
+
+                        if (newItem.name === BACKSTAGE_PASSES) {
+                            if (newItem.sellIn < 11 && newItem.quality < 50) {
+                                newItem.quality++;
+                            }
+                            if (newItem.sellIn < 6 && newItem.quality < 50) {
+                                newItem.quality++;                            
+                            }
+                        }
+                    }
+                }
+                if (newItem.name !== SULFURAS) {
+                    newItem.sellIn--;
+                }
+                if (newItem.sellIn < 0) {
+                    if (newItem.name !== AGED_BRIE) {
+                        if (newItem.name !== BACKSTAGE_PASSES) {
+                            if (newItem.quality > 0) {
+                                if (newItem.name !== SULFURAS) {
+                                    newItem.quality--;
+                                }
+                            }
+                        } else {
+                            newItem.quality = newItem.quality - newItem.quality;
+                        }
+                    } else {
+                        if (newItem.quality < 50) {
+                            newItem.quality++;
+                        }
                     }
                 }
             }
