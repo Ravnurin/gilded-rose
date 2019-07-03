@@ -41,13 +41,14 @@ export class GildedRose {
 
     updateQuality() {
         return this.items.map(item => {
-            const newItem = { ...item };
-            const { name } = newItem;
-
+            const { name } = item;
+            
             if (name === SULFURAS) {
-                return newItem;
+                return item;
             }
 
+            const newItem = { ...item };
+            
             if (isConjuredItem(name)) {
                 this.decreaseItemSellIn(newItem)
                 
